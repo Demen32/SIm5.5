@@ -8,7 +8,7 @@ public:
 	int pos;
 
 	Direction orientation;
-
+	//hello world //
 	Vector3 posOnScreen;
 	Vector3 posVec;
 	Vector3 nowPos;
