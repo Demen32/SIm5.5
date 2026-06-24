@@ -46,4 +46,6 @@ public:
 
 
 private:
+	int ytranslate(int pos) { return pos / 17; }
+	int xtranslate(int pos) { return pos % 17; }
 };
