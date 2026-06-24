@@ -8,5 +8,5 @@ Direction AGVBrain::makeMove()
     pos += move;
     cout << pos << ' ';
     return move;
-    string hey = "hello world";
+    string hey = "hello world2";
 }
