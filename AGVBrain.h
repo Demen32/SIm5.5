@@ -46,6 +46,10 @@ public:
 
 
 private:
-	int ytranslate(int pos) { return pos / 17; }
-	int xtranslate(int pos) { return pos % 17; }
+	int yTranslate(int pos) { return pos % 17; }
+	int xTranslate(int pos) { return pos / 17; }
+	int translatePos(int xpos, int ypos) { return (xpos * 17 + ypos); }
+	Direction dir = UP;
+	// global direction initialization
+
 };

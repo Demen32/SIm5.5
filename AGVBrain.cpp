@@ -9,16 +9,18 @@ Direction AGVBrain::makeMove()
     int chosenOption;
     int cellsinarow = 17;
 
-    cout << "startpos = " << pos << " startorientation = " << orientation << endl;
+    //cout << "startpos = " << pos << " startorientation = " << orientation << endl;
 
     move = (Direction)UP;
+    orientation = (Direction)UP;
+
     if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
-        // two walls detected
+        // two walls detected, next for loop will find free space
         for (int i = 0; i <= 2; i++) {
             if (sensorInformation[i] == 0) {
-                if (i == 0) { move = UP; orientation = UP; }
-                if (i == 1) { move = RIGHT; orientation = RIGHT; }
-                if (i == 2) { move = LEFT; orientation = LEFT; }
+                if (i == 0) { move = UP;}
+                if (i == 1) { move = RIGHT; }
+                if (i == 2) { move = LEFT; }
                 break;
             }
         }
@@ -41,20 +43,41 @@ Direction AGVBrain::makeMove()
 
         };
         if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 3) {
+            // sensors found a dead end, go back
             move = DOWN;
         }
 
     }
 
+    
+    
 
-    switch (move) {
+    orientation = move;
+    
+    //Translation of given orientation in global direction
+    if (orientation == DOWN) { dir = (Direction)((int)dir * -1); }
+    else if (orientation == RIGHT) {
+        if ((int)dir % 2 == 0)
+            dir = (Direction)((int)dir / -2);
+        else
+            dir = (Direction)((int)dir * 2);
+    }
+    else if (orientation == LEFT) {
+        if ((int)dir % 2 == 0)
+            dir = (Direction)((int)dir / 2);
+        else
+            dir = (Direction)((int)dir * -2);
+    }
+
+    // this part calculates position with direction of robot
+    switch (dir) {
     case -1:
         pos = pos - cellsinarow;
         break;
-    case -2:
+    case 2:
         pos = pos - 1;
         break;
-    case 2:
+    case -2:
         pos = pos + 1;
         break;
     case 1:
@@ -62,17 +85,16 @@ Direction AGVBrain::makeMove()
         break;
     }
 
-    cout << "pos = " << pos << " move = " << move << endl;
-
-    cout << "x = " << xtranslate(pos) << " y = " << ytranslate(pos) << endl << "---------" << endl;
-
-    // orientation should be included
 
 
 
-    return move;
-<<<<<<< HEAD
-    string hey = "hello world2";
-=======
->>>>>>> 36195707587175b577c5d5956120b4f2e5a78b03
+
+    cout << "-------" << endl << " move = " << move << endl;
+
+    int xpos = xTranslate(pos);
+    int ypos = yTranslate(pos);
+
+    //cout << "pos: " << pos << " x = " << xTranslate(pos) << " y = " << yTranslate(pos) << " pos: " << translatePos(xpos, ypos) << endl << "---------" << endl;
+
+   return move;
 }

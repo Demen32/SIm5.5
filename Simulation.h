@@ -101,9 +101,9 @@ public:
 						
 					}
 					
-					/*cout << "\n------------------------\n\n";
+					//cout << "\n------------------------\n\n";
 					cout << "Real pos: " << mouse.pos<<endl;
-					cout << "Brain pos: " << brain.pos<<endl<<endl;*/
+					cout << "Brain pos: " << brain.pos<<endl<<endl;
 
 
 						if (myRun.running) {
