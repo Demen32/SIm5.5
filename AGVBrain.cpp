@@ -4,10 +4,11 @@
 
 Direction AGVBrain::makeMove()
 {
+   
     Direction move;
     vector<int> wayChoosingOptions;
     int chosenOption;
-    int cellsinarow = 17;
+    
 
     //cout << "startpos = " << pos << " startorientation = " << orientation << endl;
 
@@ -98,3 +99,4 @@ Direction AGVBrain::makeMove()
 
    return move;
 }
+
