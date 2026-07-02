@@ -43,7 +43,13 @@ public:
 		this->showWayValues = false;
 		//--------------OPTIONAL CHANGE -----------------//
 		find_goals();
-
+		//init the distance array with zeros in appropiate size
+		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
+			this->distanceArrayToCurrGoal.push_back(0);
+		}
+		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
+			this->visited.push_back(false);
+		}
 	}
 
 
@@ -64,23 +70,48 @@ private:
 	}
 
 	//check if pos is on field or out of bounds and if there is a wall on pos
-	bool check_pos_on_Field(int x, int y) {
-		if ((0 < x < cellsinarow) && (0 < y < cellsinarow) && (brainLabyrinth[translatePos(x,y)] != 0)) {
-			return true;
+	vector<bool> check_pos_on_Field(int x, int y) {
+		vector<bool> result;
+		if ((0 < x < cellsinarow) && (0 < y < cellsinarow)) {
+			//first inbounds 
+			result.push_back(true);
+			if (brainLabyrinth[translatePos(x, y)] == 0) {
+				//second walldetection
+				result.push_back(true);
+				return result;
+			}
+			else {
+				result.push_back(true);
+				return result;
+			}
 		}
 		else {
-			return false;
+			result = { false, false };
+			return result;
 		}
 	}
 
-	//function to find adjacent fields from a starting pos
+	//function to find adjacent fields from a starting pos in a vector using int pos
 	vector<int> find_adj_pos(int pos) {
 		vector<int> result;
 		vector<int> xyPos = xyTrans(pos);
-		if (check_pos_on_Field(xyPos[0] - 1, xyPos[1])) {
+		//left field
+		if (check_pos_on_Field(xyPos[0] - 1, xyPos[1])[0] && not check_pos_on_Field(xyPos[0] - 1, xyPos[1])[1]) {
 			result.push_back(translatePos(xyPos[0] - 1, xyPos[1]));
 		}
-		//add other adjacent fields
+		//right field
+		if (check_pos_on_Field(xyPos[0] + 1, xyPos[1])[0] && not check_pos_on_Field(xyPos[0] + 1, xyPos[1])[1]) {
+			result.push_back(translatePos(xyPos[0] + 1, xyPos[1]));
+		}
+		//upper field
+		if (check_pos_on_Field(xyPos[0], xyPos[1] +1)[0] && not check_pos_on_Field(xyPos[0], xyPos[1] +1)[1]) {
+			result.push_back(translatePos(xyPos[0], xyPos[1] + 1));
+		}
+		//lower field
+		if (check_pos_on_Field(xyPos[0], xyPos[1] -1)[0] && not check_pos_on_Field(xyPos[0], xyPos[1] -1)[1]) {
+			result.push_back(translatePos(xyPos[0], xyPos[1] - 1));
+		}
+		return result;
 	}
 
 	int goal[2];
@@ -124,13 +155,28 @@ private:
 
 		}
 	}
-	//calculate the distances from each point in the lab to the current goal
+	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
+	
+	//queue for tracking the breadth first filling
+	vector<vector<int>> queue;
+	
+	//track currently visited fields
+	vector<bool> visited;
+
 	//recursive algo that starts at currGoal and assigns distance values to the pos
-	void distanceToCurrGoal(int currGoal) {
-		vector<int> queue;
-
-
+	void calculateDistanceArray(int posCurrGoal, int currStep) {
+		vector<int> adjFields = find_adj_pos(posCurrGoal);
+		for (int i = 0; i < adjFields.size(); i++) {
+			vector<int> newEntry = { adjFields[i],currStep + 1 };
+			queue.push_back(newEntry);
+		}
+		if (queue.size() != 0) {
+			distanceArrayToCurrGoal[queue[0][0]] = currStep; //rework
+		}
+		else {
+			return;
+		}
 		
 	}
 
