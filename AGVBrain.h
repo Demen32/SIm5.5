@@ -65,7 +65,7 @@ public:
 
 private:
 
-	int cellsinarow = 17;
+	int cellsinarow = brainLabyrinth.size();
 
 	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
@@ -89,6 +89,7 @@ private:
 		return xy;
 	}
 
+	//pretty print a vector with int 
 	void print_vec_int(vector<int> vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			if (i > 0) cout << ", ";
@@ -97,6 +98,7 @@ private:
 
 		}
 	}
+	//pretty print a vector with bool
 	void print_vec_bool(vector<bool> vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			if (i > 0) cout << ", ";
@@ -135,9 +137,16 @@ private:
 		int x = xTranslate(pos);
 		int y = yTranslate(pos);
 		//left field
-		if (check_pos_on_Field(x - 1, y)[0] && not check_pos_on_Field(x - 1, y)[1] && not visited[translatePos(x - 1,y)]) {
+		cout << check_pos_on_Field(x - 1, y)[0] << endl;
+		cout << check_pos_on_Field(x - 1, y)[1] << endl;
+		cout << not visited[translatePos(x - 1, y)] << endl;
+
+		if ((check_pos_on_Field(x - 1, y)[0]) && (not check_pos_on_Field(x - 1, y)[1]) && (not visited[translatePos(x - 1, y)])) {
+			cout << "hello" << endl;
 			result.push_back(translatePos(x - 1, y));
+			cout << result[0] << endl;
 		}
+		
 		//right field
 		if (check_pos_on_Field(x + 1, y)[0] && not check_pos_on_Field(x + 1, y)[1] && not visited[translatePos(x + 1, y)]) {
 			result.push_back(translatePos(x + 1, y));
