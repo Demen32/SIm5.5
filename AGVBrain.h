@@ -52,7 +52,8 @@ public:
 			this->visited.push_back(false);
 		}
 		cout << endl << "----------- Labyrinth -------------" << endl;
-		//print_vec_pos(brainLabyrinth);
+		print_vec_pos(distanceArrayToCurrGoal);
+		cout << endl;
 		cout << endl << "----------- Pre-Visited Array ---------" << endl;
 		print_vec_bool(visited);
 		cout << endl;
@@ -67,12 +68,7 @@ public:
 
 private:
 
-<<<<<<< HEAD
 	int cellsinarow = 17; //find correct length
-=======
-	int cellsinarow = 17;
-	
->>>>>>> 7d7289ec2d4553923e548a2a557a685701052de6
 
 	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
