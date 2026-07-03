@@ -97,6 +97,56 @@ Direction AGVBrain::makeMove()
 
     //cout << "pos: " << pos << " x = " << xTranslate(pos) << " y = " << yTranslate(pos) << " pos: " << translatePos(xpos, ypos) << endl << "---------" << endl;
 
+    int x = xTranslate(pos), y = yTranslate(pos);
+    int wallX = x, wallY = y;
+
+    // Front Sensor
+    if (sensorInformation[0] == true) {
+        if (orientation == UP) wallX = wallX + 1;
+        if (orientation == DOWN) wallX = wallX - 1;
+        if (orientation == RIGHT) wallY = wallY - 1;
+        if (orientation == LEFT) wallY = wallY + 1;
+
+        int wallIndex = wallY + (wallX * cellsinarow);
+        if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
+            brainLabyrinth[wallIndex] = BLOCK;
+        }
+    }
+
+    /* // Right Sensor
+        int wallX = x, wallY = y;
+        if (sensorInformation[1] == true) {
+            if (orientation == UP) wallY = wallY - 1;
+            if (orientation == DOWN) wallY = wallY + 1;
+            if (orientation == RIGHT) wallX = wallX - 1;
+            if (orientation == LEFT) wallX = wallX + 1;
+
+            int wallIndex = wallY + (wallX * cellsincolumn);
+            if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
+                brainLabyrinth[wallIndex] = BLOCK;
+            }
+        }
+
+        // Left Sensor
+        if (sensorInformation[2] == true) {
+            int wallX = x, wallY = y;
+            if (orientation == UP) wallY = wallY + 1;
+            if (orientation == DOWN) wallY = wallY - 1;
+            if (orientation == RIGHT) wallX = wallX + 1;
+            if (orientation == LEFT) wallX = wallX - 1;
+
+            int wallIndex = wallY + (wallX * cellsincolumn);
+            if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
+                brainLabyrinth[wallIndex] = BLOCK;
+            }
+        }
+        */
+    //cout << "pos = " << pos << " move = " << move << endl;
+    //cout << "x = " << xTranslate(pos) << " y = " << yTranslate(pos) << endl << "---------" << endl;
+
+    // orientation should be included
+
+
    return move;
 }
 

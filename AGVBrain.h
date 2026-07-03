@@ -66,6 +66,7 @@ public:
 private:
 
 	int cellsinarow = 17;
+	
 
 	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
