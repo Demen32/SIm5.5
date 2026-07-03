@@ -4,16 +4,19 @@
 
 Direction AGVBrain::makeMove()
 {
-   
+
     Direction move;
     vector<int> wayChoosingOptions;
     int chosenOption;
-    
+
 
     int x = xTranslate(pos), y = yTranslate(pos);
     int wallX = x, wallY = y;
+    cout << "pos = " << pos << endl;
+    cout << "x = " << x << "y = " << y << endl;
 
     // Front Sensor
+
     if (sensorInformation[0] == true) {
         if (dir == UP) wallX = wallX + 1;
         if (dir == DOWN) wallX = wallX - 1;
@@ -23,11 +26,39 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
+            wallX = x, wallY = y;
+        }
+    }
+    // Right Sensor
+    if (sensorInformation[1] == true) {
+        if (dir == UP) wallY = wallY - 1;
+        if (dir == DOWN) wallY = wallY + 1;
+        if (dir == RIGHT) wallX = wallX - 1;
+        if (dir == LEFT) wallX = wallX + 1;
+
+        int wallIndex = wallY + (wallX * cellsinarow);
+        if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
+            brainLabyrinth[wallIndex] = BLOCK;
+            wallX = x, wallY = y;
+        }
+    }
+
+    // Left Sensor
+    if (sensorInformation[2] == true) {
+        if (dir == UP) wallY = wallY + 1;
+        if (dir == DOWN) wallY = wallY - 1;
+        if (dir == RIGHT) wallX = wallX + 1;
+        if (dir == LEFT) wallX = wallX - 1;
+
+        int wallIndex = wallY + (wallX * cellsinarow);
+        if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
+            brainLabyrinth[wallIndex] = BLOCK;
+            cout << "l wall: " << wallIndex << endl;
+            wallX = x, wallY = y;
         }
     }
 
 
-    //cout << "startpos = " << pos << " startorientation = " << orientation << endl;
 
     move = (Direction)UP;
     orientation = (Direction)UP;
@@ -36,7 +67,7 @@ Direction AGVBrain::makeMove()
         // two walls detected, next for loop will find free space
         for (int i = 0; i <= 2; i++) {
             if (sensorInformation[i] == 0) {
-                if (i == 0) { move = UP;}
+                if (i == 0) { move = UP; }
                 if (i == 1) { move = RIGHT; }
                 if (i == 2) { move = LEFT; }
                 break;
@@ -67,11 +98,11 @@ Direction AGVBrain::makeMove()
 
     }
 
-    
-    
+
+
 
     orientation = move;
-    
+
     //Translation of given orientation in global direction
     if (orientation == DOWN) { dir = (Direction)((int)dir * -1); }
     else if (orientation == RIGHT) {
@@ -103,41 +134,5 @@ Direction AGVBrain::makeMove()
         break;
     }
 
-
-    /* // Right Sensor
-        int wallX = x, wallY = y;
-        if (sensorInformation[1] == true) {
-            if (orientation == UP) wallY = wallY - 1;
-            if (orientation == DOWN) wallY = wallY + 1;
-            if (orientation == RIGHT) wallX = wallX - 1;
-            if (orientation == LEFT) wallX = wallX + 1;
-
-            int wallIndex = wallY + (wallX * cellsincolumn);
-            if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
-                brainLabyrinth[wallIndex] = BLOCK;
-            }
-        }
-
-        // Left Sensor
-        if (sensorInformation[2] == true) {
-            int wallX = x, wallY = y;
-            if (orientation == UP) wallY = wallY + 1;
-            if (orientation == DOWN) wallY = wallY - 1;
-            if (orientation == RIGHT) wallX = wallX + 1;
-            if (orientation == LEFT) wallX = wallX - 1;
-
-            int wallIndex = wallY + (wallX * cellsincolumn);
-            if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
-                brainLabyrinth[wallIndex] = BLOCK;
-            }
-        }
-        */
-    //cout << "pos = " << pos << " move = " << move << endl;
-    //cout << "x = " << xTranslate(pos) << " y = " << yTranslate(pos) << endl << "---------" << endl;
-
-    // orientation should be included
-
-
-   return move;
+    return move;
 }
-

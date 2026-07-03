@@ -95,13 +95,13 @@ private:
 <<<<<<< HEAD
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }
-	int translatePos(int xpos, int ypos) { 
+	int translatePos(int xpos, int ypos) {
 			return (xpos * cellsinarow + ypos);
 	}
 	Direction dir = UP;
 	// global direction initialization
 =======
-	
+
 >>>>>>> f9d09f8a89b9478f0a46ed78c1670a9ca4da35e0
 
 	//function to translate pos to xy
@@ -120,7 +120,7 @@ private:
 		}
 	}
 
-	//pretty print a vector with int 
+	//pretty print a vector with int
 	void print_vec(vector<int> vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			if (i > 0) cout << ", ";
@@ -130,7 +130,7 @@ private:
 		}
 	}
 
-	//pretty print a vector with int 
+	//pretty print a vector with int
 	void print_vec(vector<bool> vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			if (i > 0) cout << ", ";
@@ -140,7 +140,7 @@ private:
 		}
 	}
 
-	//pretty print a vector with int 
+	//pretty print a vector with int
 	void print_vec_pos(vector<int> vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			if (i > 0) cout << ", ";
@@ -205,7 +205,7 @@ private:
 			//cout << "curr y: " << y << endl;
 			//cout << "curr pos: " << translatePos(x, y) << endl;
 
-			//first inbounds 
+			//first inbounds
 			//cout << (this->brainLabyrinth[translatePos(x, y)] == 0) << endl << translatePos(x, y) << endl;
 			if (brainLabyrinth[translatePos(x, y)] == FREE) {
 				cout << "-------check Walls-------" << endl;
@@ -244,11 +244,11 @@ private:
 		//cout << not visited[translatePos(x - 1, y)] << endl;
 
 		if (check_pos_on_Field(x - 1, y)) {
-	
+
 			result.push_back(translatePos(x - 1, y));
 			cout << result[0] << endl;
 		}
-		
+
 		//right field
 		if (check_pos_on_Field(x + 1, y)) {
 			result.push_back(translatePos(x + 1, y));
@@ -280,15 +280,15 @@ private:
 		if (queue.size() != 0) {
 			int newPos = queue[0][0];
 			int newStep = queue[0][1];
-			distanceArrayToCurrGoal[newPos] = newStep; 
+			distanceArrayToCurrGoal[newPos] = newStep;
 			visited[newPos] = true;
 			queue.erase(queue.begin());
-			calculateDistanceArray(queue[0][0], queue[0][1]);	
+			calculateDistanceArray(queue[0][0], queue[0][1]);
 		}
 		else {
 			return;
 		}
-		
+
 	}
 
 	vector<int> find_shortest_path(int startPos, int currGoal) {
