@@ -42,6 +42,7 @@ public:
 		//Change to true
 		this->showWayValues = false;
 		//--------------OPTIONAL CHANGE -----------------//
+
 		find_goals();
 		//init the distance array with zeros in appropiate size
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
@@ -50,12 +51,31 @@ public:
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->visited.push_back(false);
 		}
+		cout << endl << "----------- Pre-Visited Array ---------" << endl;
+		print_vec_bool(visited);
+		cout << endl;
+		calculateDistanceArray(posSubGoal, 0);
+		cout << "--------- Distance Array ----------" << endl;
+		print_vec_int(distanceArrayToCurrGoal);
+		cout << endl << "----------- Visited Array ---------" << endl;
+		print_vec_bool(visited);
+		cout << endl;
 	}
 
 
 private:
 
 	int cellsinarow = 17;
+
+	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
+	vector<int> distanceArrayToCurrGoal;
+
+	//queue for tracking the breadth first filling
+	vector<vector<int>> queue;
+
+	//track currently visited fields
+	vector<bool> visited;
+
 
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }
@@ -67,6 +87,23 @@ private:
 	vector<int> xyTrans(int pos) {
 		vector<int> xy = { xTranslate(pos),yTranslate(pos) };
 		return xy;
+	}
+
+	void print_vec_int(vector<int> vec) {
+		for (int i = 0; i < vec.size(); i++) {
+			if (i > 0) cout << ", ";
+			if (i % cellsinarow == 0) cout << endl;
+			cout << vec[i];
+
+		}
+	}
+	void print_vec_bool(vector<bool> vec) {
+		for (int i = 0; i < vec.size(); i++) {
+			if (i > 0) cout << ", ";
+			if (i % cellsinarow == 0) cout << endl;
+			cout << vec[i];
+
+		}
 	}
 
 	//check if pos is on field or out of bounds and if there is a wall on pos
@@ -93,23 +130,25 @@ private:
 
 	//function to find adjacent fields from a starting pos in a vector using int pos
 	vector<int> find_adj_pos(int pos) {
+		cout << "curr pos: " << pos << endl;
 		vector<int> result;
-		vector<int> xyPos = xyTrans(pos);
+		int x = xTranslate(pos);
+		int y = yTranslate(pos);
 		//left field
-		if (check_pos_on_Field(xyPos[0] - 1, xyPos[1])[0] && not check_pos_on_Field(xyPos[0] - 1, xyPos[1])[1]) {
-			result.push_back(translatePos(xyPos[0] - 1, xyPos[1]));
+		if (check_pos_on_Field(x - 1, y)[0] && not check_pos_on_Field(x - 1, y)[1] && not visited[translatePos(x - 1,y)]) {
+			result.push_back(translatePos(x - 1, y));
 		}
 		//right field
-		if (check_pos_on_Field(xyPos[0] + 1, xyPos[1])[0] && not check_pos_on_Field(xyPos[0] + 1, xyPos[1])[1]) {
-			result.push_back(translatePos(xyPos[0] + 1, xyPos[1]));
+		if (check_pos_on_Field(x + 1, y)[0] && not check_pos_on_Field(x + 1, y)[1] && not visited[translatePos(x + 1, y)]) {
+			result.push_back(translatePos(x + 1, y));
 		}
 		//upper field
-		if (check_pos_on_Field(xyPos[0], xyPos[1] +1)[0] && not check_pos_on_Field(xyPos[0], xyPos[1] +1)[1]) {
-			result.push_back(translatePos(xyPos[0], xyPos[1] + 1));
+		if (check_pos_on_Field(x, y +1)[0] && not check_pos_on_Field(x, y +1)[1] && not visited[translatePos(x, y + 1)]) {
+			result.push_back(translatePos(x, y + 1));
 		}
 		//lower field
-		if (check_pos_on_Field(xyPos[0], xyPos[1] -1)[0] && not check_pos_on_Field(xyPos[0], xyPos[1] -1)[1]) {
-			result.push_back(translatePos(xyPos[0], xyPos[1] - 1));
+		if (check_pos_on_Field(x, y -1)[0] && not check_pos_on_Field(x, y -1)[1] && not visited[translatePos(x, y - 1)]) {
+			result.push_back(translatePos(x, y - 1));
 		}
 		return result;
 	}
@@ -137,7 +176,7 @@ private:
 				i++;
 				cout << "-----------subgoal found---------------"<< endl;
 				cout << "Subgoal Position at (" << subGoal[0] << "|" << subGoal[1]<<")" << endl;
-
+				cout << "Pos at " << posSubGoal << endl;
 			}
 			else if (brainLabyrinth[i] == 3) {
 				goal[0] = xTranslate(i);
@@ -147,6 +186,7 @@ private:
 				i++;
 				cout << "-----------goal found---------------" << endl;
 				cout << "Goal Position at (" << goal[0] << "|" << goal[1]<<")" << endl;
+				cout << "Pos at " << posGoal << endl;
 
 			}
 			else {
@@ -155,24 +195,26 @@ private:
 
 		}
 	}
-	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
-	vector<int> distanceArrayToCurrGoal;
-	
-	//queue for tracking the breadth first filling
-	vector<vector<int>> queue;
-	
-	//track currently visited fields
-	vector<bool> visited;
+
 
 	//recursive algo that starts at currGoal and assigns distance values to the pos
+	//first calcDist set goal to visited
 	void calculateDistanceArray(int posCurrGoal, int currStep) {
+		cout << "--------Start new Recursion----------" << endl;
 		vector<int> adjFields = find_adj_pos(posCurrGoal);
 		for (int i = 0; i < adjFields.size(); i++) {
 			vector<int> newEntry = { adjFields[i],currStep + 1 };
 			queue.push_back(newEntry);
 		}
+		cout << "Adj Fields: " << adjFields.size() << endl;
+		//cout << queue[0][0] << endl;
 		if (queue.size() != 0) {
-			distanceArrayToCurrGoal[queue[0][0]] = currStep; //rework
+			int newPos = queue[0][0];
+			int newStep = queue[0][1];
+			distanceArrayToCurrGoal[newPos] = newStep; 
+			visited[newPos] = true;
+			queue.erase(queue.begin());
+			calculateDistanceArray(queue[0][0], queue[0][1]);	
 		}
 		else {
 			return;
