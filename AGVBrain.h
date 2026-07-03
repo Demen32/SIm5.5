@@ -43,7 +43,7 @@ public:
 		this->showWayValues = false;
 		//--------------OPTIONAL CHANGE -----------------//
 
-		find_goals();
+		/*find_goals();
 		//init the distance array with zeros in appropiate size
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->distanceArrayToCurrGoal.push_back(0);
@@ -66,12 +66,21 @@ public:
 		cout << endl << "----------- Post-Visited Array ---------" << endl;
 		print_vec(visited);
 		cout << endl;
+		*/
 	}
 
 
 private:
 
 	int cellsinarow = 17; //find correct length
+	int yTranslate(int pos) { return pos % cellsinarow; }
+	int xTranslate(int pos) { return pos / cellsinarow; }
+	int translatePos(int xpos, int ypos) { return (xpos * cellsinarow + ypos); }
+	Direction dir = UP;
+	// global direction initialization
+
+
+	/*
 
 	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
@@ -83,6 +92,7 @@ private:
 	vector<bool> visited;
 
 
+<<<<<<< HEAD
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }
 	int translatePos(int xpos, int ypos) { 
@@ -90,6 +100,9 @@ private:
 	}
 	Direction dir = UP;
 	// global direction initialization
+=======
+	
+>>>>>>> f9d09f8a89b9478f0a46ed78c1670a9ca4da35e0
 
 	//function to translate pos to xy
 	vector<int> xyTrans(int pos) {
@@ -283,4 +296,5 @@ private:
 
 		return path;
 	}
+	*/
 };

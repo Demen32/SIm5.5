@@ -10,6 +10,23 @@ Direction AGVBrain::makeMove()
     int chosenOption;
     
 
+    int x = xTranslate(pos), y = yTranslate(pos);
+    int wallX = x, wallY = y;
+
+    // Front Sensor
+    if (sensorInformation[0] == true) {
+        if (dir == UP) wallX = wallX + 1;
+        if (dir == DOWN) wallX = wallX - 1;
+        if (dir == RIGHT) wallY = wallY - 1;
+        if (dir == LEFT) wallY = wallY + 1;
+
+        int wallIndex = wallY + (wallX * cellsinarow);
+        if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
+            brainLabyrinth[wallIndex] = BLOCK;
+        }
+    }
+
+
     //cout << "startpos = " << pos << " startorientation = " << orientation << endl;
 
     move = (Direction)UP;
@@ -86,32 +103,6 @@ Direction AGVBrain::makeMove()
         break;
     }
 
-
-
-
-
-    cout << "-------" << endl << " move = " << move << endl;
-
-    int xpos = xTranslate(pos);
-    int ypos = yTranslate(pos);
-
-    //cout << "pos: " << pos << " x = " << xTranslate(pos) << " y = " << yTranslate(pos) << " pos: " << translatePos(xpos, ypos) << endl << "---------" << endl;
-
-    int x = xTranslate(pos), y = yTranslate(pos);
-    int wallX = x, wallY = y;
-
-    // Front Sensor
-    if (sensorInformation[0] == true) {
-        if (orientation == UP) wallX = wallX + 1;
-        if (orientation == DOWN) wallX = wallX - 1;
-        if (orientation == RIGHT) wallY = wallY - 1;
-        if (orientation == LEFT) wallY = wallY + 1;
-
-        int wallIndex = wallY + (wallX * cellsinarow);
-        if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
-            brainLabyrinth[wallIndex] = BLOCK;
-        }
-    }
 
     /* // Right Sensor
         int wallX = x, wallY = y;
