@@ -43,7 +43,7 @@ public:
 		this->showWayValues = false;
 		//--------------OPTIONAL CHANGE -----------------//
 
-		/*find_goals();
+		find_goals();
 		//init the distance array with zeros in appropiate size
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->distanceArrayToCurrGoal.push_back(0);
@@ -60,13 +60,13 @@ public:
 		cout << endl << "----------- Pre-Visited Array ---------" << endl;
 		print_vec(visited);
 		cout << endl;
-		calculateDistanceArray(posSubGoal, 0);
+		calculateDistanceArray(posSubGoal);
 		cout << "--------- Distance Array ----------" << endl;
 		print_vec(distanceArrayToCurrGoal);
 		cout << endl << "----------- Post-Visited Array ---------" << endl;
 		print_vec(visited);
 		cout << endl;
-		*/
+		
 	}
 
 
@@ -80,7 +80,7 @@ private:
 	// global direction initialization
 
 
-	/*
+	
 
 	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
@@ -92,17 +92,6 @@ private:
 	vector<bool> visited;
 
 
-<<<<<<< HEAD
-	int yTranslate(int pos) { return pos % cellsinarow; }
-	int xTranslate(int pos) { return pos / cellsinarow; }
-	int translatePos(int xpos, int ypos) { 
-			return (xpos * cellsinarow + ypos);
-	}
-	Direction dir = UP;
-	// global direction initialization
-=======
-	
->>>>>>> f9d09f8a89b9478f0a46ed78c1670a9ca4da35e0
 
 	//function to translate pos to xy
 	vector<int> xyTrans(int pos) {
@@ -198,9 +187,9 @@ private:
 
 	//check if pos is on field or out of bounds and if there is a wall on pos
 	bool check_pos_on_Field(int x, int y) {
-		cout << "check" << endl;
+		//cout << "check" << endl;
 		if ((0 <= x) && (x < cellsinarow) && (0 <= y) && (y < cellsinarow)) {
-			cout << "-------check inbound-------" << endl;
+			//cout << "-------check inbound-------" << endl;
 			//cout << "curr x: " << x << endl;
 			//cout << "curr y: " << y << endl;
 			//cout << "curr pos: " << translatePos(x, y) << endl;
@@ -208,11 +197,11 @@ private:
 			//first inbounds 
 			//cout << (this->brainLabyrinth[translatePos(x, y)] == 0) << endl << translatePos(x, y) << endl;
 			if (brainLabyrinth[translatePos(x, y)] == FREE) {
-				cout << "-------check Walls-------" << endl;
+				//cout << "-------check Walls-------" << endl;
 
 				//second walldetection
 				if (not visited[translatePos(x, y)]) {
-					cout << "-------check visited-------" << endl;
+					//cout << "-------check visited-------" << endl;
 
 					//third visited or not
 					return true;
@@ -232,11 +221,11 @@ private:
 
 	//function to find adjacent fields from a starting pos in a vector using int pos
 	vector<int> find_adj_pos(int pos) {
-		cout << "curr pos: " << pos << endl;
+		//cout << "curr pos: " << pos << endl;
 		vector<int> result;
 		int x = xTranslate(pos);
 		int y = yTranslate(pos);
-		cout << "curr pos trans: " << translatePos(x,y) << endl;
+		//cout << "curr pos trans: " << translatePos(x,y) << endl;
 
 		//left field
 		//cout << check_pos_on_Field(x - 1, y)[0] << endl;
@@ -246,7 +235,7 @@ private:
 		if (check_pos_on_Field(x - 1, y)) {
 	
 			result.push_back(translatePos(x - 1, y));
-			cout << result[0] << endl;
+			//cout << result[0] << endl;
 		}
 		
 		//right field
@@ -266,35 +255,35 @@ private:
 
 
 
-	//recursive algo that starts at currGoal and assigns distance values to the pos
+	//iterative algo that starts at currGoal and assigns distance values to the pos
 	//first calcDist set goal to visited
-	void calculateDistanceArray(int posCurrGoal, int currStep) {
-		cout << "--------Start new Recursion----------" << endl;
-		vector<int> adjFields = find_adj_pos(posCurrGoal);
-		for (int i = 0; i < adjFields.size(); i++) {
-			vector<int> newEntry = { adjFields[i],currStep + 1 };
-			queue.push_back(newEntry);
-		}
-		cout << "Adj Fields: " << adjFields.size() << endl;
-		//cout << queue[0][0] << endl;
-		if (queue.size() != 0) {
-			int newPos = queue[0][0];
-			int newStep = queue[0][1];
-			distanceArrayToCurrGoal[newPos] = newStep; 
-			visited[newPos] = true;
+	void calculateDistanceArray(int startPos) {
+		queue.clear();
+		queue.push_back({ startPos,0 });
+		visited[startPos] = true;
+		distanceArrayToCurrGoal[startPos] = 0;
+
+		//iterative queue handeling
+		while (!queue.empty()) {
+			int currPos = queue[0][0];
+			int currStep = queue[0][1];
 			queue.erase(queue.begin());
-			calculateDistanceArray(queue[0][0], queue[0][1]);	
+
+			vector<int> adj_fields = find_adj_pos(currPos);
+			for (int i = 0; i < adj_fields.size(); i++) {
+				int newPos = adj_fields[i];
+				visited[newPos] = true;
+				distanceArrayToCurrGoal[newPos] = currStep + 1;
+				queue.push_back({ newPos, currStep + 1 });
+			}
 		}
-		else {
-			return;
-		}
+
+	}
+
+	void find_shortest_path(int startPos, int currGoal) {
 		
-	}
 
-	vector<int> find_shortest_path(int startPos, int currGoal) {
-		vector<int> path;
-
-		return path;
+		return;
 	}
-	*/
+	
 };
