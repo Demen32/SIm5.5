@@ -54,14 +54,17 @@ public:
 		cout << endl << "----------- Labyrinth -------------" << endl;
 		print_vec_pos(distanceArrayToCurrGoal);
 		cout << endl;
+		cout << endl << "----------- BrainLabyrinth -------------" << endl;
+		print_vec(this->brainLabyrinth);
+		cout << endl;
 		cout << endl << "----------- Pre-Visited Array ---------" << endl;
-		print_vec_bool(visited);
+		print_vec(visited);
 		cout << endl;
 		calculateDistanceArray(posSubGoal, 0);
 		cout << "--------- Distance Array ----------" << endl;
-		print_vec_int(distanceArrayToCurrGoal);
-		cout << endl << "----------- Visited Array ---------" << endl;
-		print_vec_bool(visited);
+		print_vec(distanceArrayToCurrGoal);
+		cout << endl << "----------- Post-Visited Array ---------" << endl;
+		print_vec(visited);
 		cout << endl;
 	}
 
@@ -82,7 +85,9 @@ private:
 
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }
-	int translatePos(int xpos, int ypos) { return (xpos * cellsinarow + ypos); }
+	int translatePos(int xpos, int ypos) { 
+			return (xpos * cellsinarow + ypos);
+	}
 	Direction dir = UP;
 	// global direction initialization
 
@@ -92,8 +97,28 @@ private:
 		return xy;
 	}
 
+	//pretty print a vector with objekt
+	void print_vec(vector<Objekt> vec) {
+		for (int i = 0; i < vec.size(); i++) {
+			if (i > 0) cout << ", ";
+			if (i % cellsinarow == 0) cout << endl;
+			cout << vec[i];
+
+		}
+	}
+
 	//pretty print a vector with int 
-	void print_vec_int(vector<int> vec) {
+	void print_vec(vector<int> vec) {
+		for (int i = 0; i < vec.size(); i++) {
+			if (i > 0) cout << ", ";
+			if (i % cellsinarow == 0) cout << endl;
+			cout << vec[i];
+
+		}
+	}
+
+	//pretty print a vector with int 
+	void print_vec(vector<bool> vec) {
 		for (int i = 0; i < vec.size(); i++) {
 			if (i > 0) cout << ", ";
 			if (i % cellsinarow == 0) cout << endl;
@@ -112,71 +137,6 @@ private:
 		}
 	}
 
-	//pretty print a vector with bool
-	void print_vec_bool(vector<bool> vec) {
-		for (int i = 0; i < vec.size(); i++) {
-			if (i > 0) cout << ", ";
-			if (i % cellsinarow == 0) cout << endl;
-			cout << vec[i];
-
-		}
-	}
-
-	//check if pos is on field or out of bounds and if there is a wall on pos
-	vector<bool> check_pos_on_Field(int x, int y) {
-		vector<bool> result;
-		if ((0 < x < cellsinarow) && (0 < y < cellsinarow)) {
-			//first inbounds 
-			result.push_back(true);
-
-			if (brainLabyrinth[translatePos(x, y)] == 0) {
-				//second walldetection
-				result.push_back(true);
-				return result;
-			}
-			else {
-				result.push_back(false);
-				return result;
-			}
-		}
-		else {
-			result = { false, false };
-			return result;
-		}
-	}
-
-	//function to find adjacent fields from a starting pos in a vector using int pos
-	vector<int> find_adj_pos(int pos) {
-		cout << "curr pos: " << pos << endl;
-		vector<int> result;
-		int x = xTranslate(pos);
-		int y = yTranslate(pos);
-		//left field
-		cout << check_pos_on_Field(x - 1, y)[0] << endl;
-		cout << check_pos_on_Field(x - 1, y)[1] << endl;
-		cout << not visited[translatePos(x - 1, y)] << endl;
-
-		if ((check_pos_on_Field(x - 1, y)[0]) && (not check_pos_on_Field(x - 1, y)[1]) && (not visited[translatePos(x - 1, y)])) {
-			cout << "hello" << endl;
-			result.push_back(translatePos(x - 1, y));
-			cout << result[0] << endl;
-		}
-		
-		//right field
-		if (check_pos_on_Field(x + 1, y)[0] && not check_pos_on_Field(x + 1, y)[1] && not visited[translatePos(x + 1, y)]) {
-			result.push_back(translatePos(x + 1, y));
-		}
-		//upper field
-		if (check_pos_on_Field(x, y +1)[0] && not check_pos_on_Field(x, y +1)[1] && not visited[translatePos(x, y + 1)]) {
-			result.push_back(translatePos(x, y + 1));
-		}
-		//lower field
-		if (check_pos_on_Field(x, y -1)[0] && not check_pos_on_Field(x, y -1)[1] && not visited[translatePos(x, y - 1)]) {
-			result.push_back(translatePos(x, y - 1));
-		}
-		return result;
-	}
-
 	int goal[2];
 	int subGoal[2];
 	int posGoal;
@@ -186,11 +146,11 @@ private:
 	void find_goals() {
 		bool goalFound = false;
 		bool subGoalFound = false;
-		
+
 		int i = 0;
 		while (not goalFound || not subGoalFound) {
 			if (i > brainLabyrinth.size()) {
-				cout << "Index out of Bounds: Couldn't find goal or subgoal"<<endl;
+				cout << "Index out of Bounds: Couldn't find goal or subgoal" << endl;
 			}
 			else if (brainLabyrinth[i] == 2) {
 				subGoal[0] = xTranslate(i);
@@ -198,8 +158,8 @@ private:
 				posSubGoal = i;
 				subGoalFound = true;
 				i++;
-				cout << "-----------subgoal found---------------"<< endl;
-				cout << "Subgoal Position at (" << subGoal[0] << "|" << subGoal[1]<<")" << endl;
+				cout << "-----------subgoal found---------------" << endl;
+				cout << "Subgoal Position at (" << subGoal[0] << "|" << subGoal[1] << ")" << endl;
 				cout << "Pos at " << posSubGoal << endl;
 			}
 			else if (brainLabyrinth[i] == 3) {
@@ -209,7 +169,7 @@ private:
 				goalFound = true;
 				i++;
 				cout << "-----------goal found---------------" << endl;
-				cout << "Goal Position at (" << goal[0] << "|" << goal[1]<<")" << endl;
+				cout << "Goal Position at (" << goal[0] << "|" << goal[1] << ")" << endl;
 				cout << "Pos at " << posGoal << endl;
 
 			}
@@ -219,6 +179,78 @@ private:
 
 		}
 	}
+
+
+
+
+	//check if pos is on field or out of bounds and if there is a wall on pos
+	bool check_pos_on_Field(int x, int y) {
+		cout << "check" << endl;
+		if ((0 <= x) && (x < cellsinarow) && (0 <= y) && (y < cellsinarow)) {
+			cout << "-------check inbound-------" << endl;
+			//cout << "curr x: " << x << endl;
+			//cout << "curr y: " << y << endl;
+			//cout << "curr pos: " << translatePos(x, y) << endl;
+
+			//first inbounds 
+			//cout << (this->brainLabyrinth[translatePos(x, y)] == 0) << endl << translatePos(x, y) << endl;
+			if (brainLabyrinth[translatePos(x, y)] == FREE) {
+				cout << "-------check Walls-------" << endl;
+
+				//second walldetection
+				if (not visited[translatePos(x, y)]) {
+					cout << "-------check visited-------" << endl;
+
+					//third visited or not
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
+	//function to find adjacent fields from a starting pos in a vector using int pos
+	vector<int> find_adj_pos(int pos) {
+		cout << "curr pos: " << pos << endl;
+		vector<int> result;
+		int x = xTranslate(pos);
+		int y = yTranslate(pos);
+		cout << "curr pos trans: " << translatePos(x,y) << endl;
+
+		//left field
+		//cout << check_pos_on_Field(x - 1, y)[0] << endl;
+		//cout << check_pos_on_Field(x - 1, y)[1] << endl;
+		//cout << not visited[translatePos(x - 1, y)] << endl;
+
+		if (check_pos_on_Field(x - 1, y)) {
+	
+			result.push_back(translatePos(x - 1, y));
+			cout << result[0] << endl;
+		}
+		
+		//right field
+		if (check_pos_on_Field(x + 1, y)) {
+			result.push_back(translatePos(x + 1, y));
+		}
+		//upper field
+		if (check_pos_on_Field(x, y +1)) {
+			result.push_back(translatePos(x, y + 1));
+		}
+		//lower field
+		if (check_pos_on_Field(x, y -1)) {
+			result.push_back(translatePos(x, y - 1));
+		}
+		return result;
+	}
+
 
 
 	//recursive algo that starts at currGoal and assigns distance values to the pos
