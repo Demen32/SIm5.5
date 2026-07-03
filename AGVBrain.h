@@ -51,6 +51,8 @@ public:
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->visited.push_back(false);
 		}
+		cout << endl << "----------- Labyrinth -------------" << endl;
+		//print_vec_pos(brainLabyrinth);
 		cout << endl << "----------- Pre-Visited Array ---------" << endl;
 		print_vec_bool(visited);
 		cout << endl;
@@ -65,7 +67,7 @@ public:
 
 private:
 
-	int cellsinarow = brainLabyrinth.size();
+	int cellsinarow = 17; //find correct length
 
 	//calculate the distances from each point in the lab to the current goal. Its filled with zeros in the size of the lab
 	vector<int> distanceArrayToCurrGoal;
@@ -98,6 +100,17 @@ private:
 
 		}
 	}
+
+	//pretty print a vector with int 
+	void print_vec_pos(vector<int> vec) {
+		for (int i = 0; i < vec.size(); i++) {
+			if (i > 0) cout << ", ";
+			if (i % cellsinarow == 0) cout << endl;
+			cout << i;
+
+		}
+	}
+
 	//pretty print a vector with bool
 	void print_vec_bool(vector<bool> vec) {
 		for (int i = 0; i < vec.size(); i++) {
@@ -114,13 +127,14 @@ private:
 		if ((0 < x < cellsinarow) && (0 < y < cellsinarow)) {
 			//first inbounds 
 			result.push_back(true);
+
 			if (brainLabyrinth[translatePos(x, y)] == 0) {
 				//second walldetection
 				result.push_back(true);
 				return result;
 			}
 			else {
-				result.push_back(true);
+				result.push_back(false);
 				return result;
 			}
 		}
