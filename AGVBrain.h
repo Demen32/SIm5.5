@@ -91,14 +91,13 @@ private:
 	//track currently visited fields
 	vector<bool> visited;
 
+	int goal[2];
+	int subGoal[2];
+	int posGoal;
+	int posSubGoal;
 
-	int yTranslate(int pos) { return pos % cellsinarow; }
-	int xTranslate(int pos) { return pos / cellsinarow; }
-	int translatePos(int xpos, int ypos) {
-			return (xpos * cellsinarow + ypos);
-	}
-	Direction dir = UP;
-	// global direction initialization
+	bool foundSubGoal = false;
+	bool foundGoal = false;
 
 
 	//function to translate pos to xy
@@ -147,10 +146,6 @@ private:
 		}
 	}
 
-	int goal[2];
-	int subGoal[2];
-	int posGoal;
-	int posSubGoal;
 
 	//find xy of sub-goal and goal
 	void find_goals() {
@@ -208,16 +203,9 @@ private:
 				//cout << "-------check Walls-------" << endl;
 
 				//second walldetection
-				if (not visited[translatePos(x, y)]) {
-					//cout << "-------check visited-------" << endl;
-
-					//third visited or not
 					return true;
-				}
-				else {
-					return false;
-				}
 			}
+			
 			else {
 				return false;
 			}
@@ -279,18 +267,34 @@ private:
 			vector<int> adj_fields = find_adj_pos(currPos);
 			for (int i = 0; i < adj_fields.size(); i++) {
 				int newPos = adj_fields[i];
-				visited[newPos] = true;
-				distanceArrayToCurrGoal[newPos] = currStep + 1;
-				queue.push_back({ newPos, currStep + 1 });
+				if (!visited[newPos]) {
+					visited[newPos] = true;
+					distanceArrayToCurrGoal[newPos] = currStep + 1;
+					queue.push_back({ newPos, currStep + 1 });
+				}
+
 			}
 		}
 
 	}
 
-	void find_shortest_path(int startPos, int currGoal) {
+	//this function delivers the next pos to move to
+	int find_shortest_path(int currPos) {
+		if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
+		else calculateDistanceArray(posGoal); 
 
-
-		return;
+		vector<int> adj_fields = find_adj_pos(currPos);
+		int min_dist = distanceArrayToCurrGoal[adj_fields[0]];
+		int pos_min_dist = adj_fields[0];
+		//find min from distances in adj_fields
+		for (int i = 0; i < adj_fields.size(); i++) {
+			if (min_dist > distanceArrayToCurrGoal[adj_fields[i]]) {
+				min_dist = distanceArrayToCurrGoal[adj_fields[i]];
+				pos_min_dist = adj_fields[i];
+			}
+		}
+		
+		return pos_min_dist;
 
 	}
 };

@@ -58,11 +58,17 @@ Direction AGVBrain::makeMove()
         }
     }
 
+    //this function delivers the next pos to move to
+    int next_pos = find_shortest_path(pos);
 
-
+    //mode switch for targeting next goal
+    if (next_pos == posSubGoal) foundSubGoal = true;
+    //condition to terminate program
+    if (next_pos == posGoal) foundGoal = true;
+    
     move = (Direction)UP;
     orientation = (Direction)UP;
-
+    /*
     if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
         // two walls detected, next for loop will find free space
         for (int i = 0; i <= 2; i++) {
@@ -97,7 +103,7 @@ Direction AGVBrain::makeMove()
         }
 
     }
-
+    */
 
 
 
