@@ -77,8 +77,9 @@ Direction AGVBrain::makeMove()
     
     //cout << "move = " << move << " nextpos = " << next_pos << endl;
 
-    move = LEFT;
+   
     // left set as default only for testing purpose, we need to change it later
+    move = moveToNextPos(pos, next_pos, dir);
 
     if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
         // two walls detected, next for loop will find free space
@@ -92,7 +93,7 @@ Direction AGVBrain::makeMove()
         }
     }
     else {
-        if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 1) {
+        if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 1){
             // one wall detected, robot will choose one that is closer to goal
             move = moveToNextPos(pos, next_pos, dir);
         };
