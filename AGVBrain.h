@@ -73,6 +73,8 @@ public:
 
 private:
 
+	int moves = 0;
+
 	int cellsinarow = 17; // add correct lenght
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }

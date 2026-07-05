@@ -4,7 +4,7 @@
 
 Direction AGVBrain::makeMove()
 {
-
+    moves++;
     Direction move;
     vector<int> wayChoosingOptions;
     int chosenOption;
@@ -142,5 +142,11 @@ Direction AGVBrain::makeMove()
     
     cout << "nextpos = " << next_pos << " move = " << move << " pos = " << pos << " orientation = " << dir << endl;
     cout << "*******************" << endl;
+    
+    if (moves == 72) {
+        moves = 0;
+        foundSubGoal = false;
+        foundGoal = false;
+    }
     return move;
 }
