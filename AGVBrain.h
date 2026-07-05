@@ -330,7 +330,7 @@ private:
 			return DOWN;
 		}
 	}
-
+	
 	//calculates next move from next_pos and accounts global orientation of robot
 	Direction moveToNextPos(int pos, int next_pos, Direction dir)
 	{
@@ -338,12 +338,16 @@ private:
 		switch (dir) {
 		case DOWN:
 			move = move * -1;
+			
+			
 		case RIGHT:
-			if (move % 2 == 0) move = move / -2;
-			else move = move * 2;
-		case LEFT:
 			if (move % 2 == 0) move = move / 2;
 			else move = move * -2;
+			
+		case LEFT:
+			if (move % 2 == 0) move = move / -2;
+			else move = move * 2;
+			
 		}
 
 		return (Direction)move;
