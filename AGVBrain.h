@@ -48,9 +48,7 @@ public:
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->distanceArrayToCurrGoal.push_back(0);
 		}
-		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
-			this->visited.push_back(false);
-		}
+		redrawVisited();
 		
 		cout << endl << "----------- Labyrinth -------------" << endl;
 		print_vec_pos(distanceArrayToCurrGoal);
@@ -150,6 +148,14 @@ private:
 		}
 	}
 
+	void redrawVisited() {
+		visited = {};
+		for (int i = 0; i < brainLabyrinth.size(); i++) {
+			visited.push_back(false);
+		}
+		return;
+	}
+
 
 	//find xy of sub-goal and goal
 	void find_goals() {
@@ -207,12 +213,15 @@ private:
 				//cout << "-------check Walls-------" << endl;
 
 				//second walldetection
-					return true;
+				return true;
 			}
-			
-			else {
+
+			else if (brainLabyrinth[translatePos(x, y)] == BLOCK) {
+				distanceArrayToCurrGoal[translatePos(x, y)] = 99;
+				visited[translatePos(x, y)] = true;
 				return false;
 			}
+			else return true;
 		}
 		else {
 			return false;
@@ -258,6 +267,7 @@ private:
 	//iterative algo that starts at currGoal and assigns distance values to the pos
 	void calculateDistanceArray(int startPos) {
 		queue.clear();
+		redrawVisited();
 		queue.push_back({ startPos,0 });
 		visited[startPos] = true;
 		distanceArrayToCurrGoal[startPos] = 0;
@@ -286,6 +296,9 @@ private:
 	int find_shortest_path(int currPos) {
 		if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
 		else calculateDistanceArray(posGoal); 
+		cout << endl;
+		print_vec(distanceArrayToCurrGoal);
+		cout << endl;
 
 		vector<int> adj_fields = find_adj_pos(currPos);
 		int min_dist = distanceArrayToCurrGoal[adj_fields[0]];

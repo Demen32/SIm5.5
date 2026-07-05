@@ -67,7 +67,10 @@ Direction AGVBrain::makeMove()
     int next_pos = find_shortest_path(pos);
 
     //mode switch for targeting next goal
-    if (next_pos == posSubGoal) foundSubGoal = true;
+    if (next_pos == posSubGoal) {
+        cout << "-------------- SUBGOAL FOUND ----------------" << endl;
+        foundSubGoal = true;
+    }
     //condition to terminate program
     if (next_pos == posGoal) foundGoal = true;
 

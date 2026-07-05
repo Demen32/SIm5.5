@@ -57,6 +57,17 @@ Labyrinth::Labyrinth(int size, Shader& sh)
 	0,0,0,0,
 	
 	};*/
+
+	//Test mini
+	/*vector<int> raw = {
+
+	0,1,0,0,0,0,
+	0,1,1,0,2,0,
+	0,1,1,0,1,0,
+	0,1,1,0,1,0,
+	0,3,1,1,1,0,
+	0,0,0,0,0,0,
+	};*/
 	
 	for (int v : raw) {
 		this->myLabyrinth.push_back(static_cast<Objekt>(v));
