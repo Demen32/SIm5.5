@@ -80,7 +80,7 @@ Direction AGVBrain::makeMove()
    
     // left set as default only for testing purpose, we need to change it later
     move = moveToNextPos(pos, next_pos, dir);
-
+    /*
     if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
         // two walls detected, next for loop will find free space
         for (int i = 0; i <= 2; i++) {
@@ -102,7 +102,7 @@ Direction AGVBrain::makeMove()
             move = DOWN;
         }
 
-    }
+    }*/
     
 
 

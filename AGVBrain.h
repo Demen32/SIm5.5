@@ -303,13 +303,17 @@ private:
 		vector<int> adj_fields = find_adj_pos(currPos);
 		int min_dist = distanceArrayToCurrGoal[adj_fields[0]];
 		int pos_min_dist = adj_fields[0];
+		cout << "first min dist: " << min_dist << endl;
 		//find min from distances in adj_fields
 		for (int i = 0; i < adj_fields.size(); i++) {
-			if (min_dist > distanceArrayToCurrGoal[adj_fields[i]]) {
+			cout << "distance " << i << ": " << distanceArrayToCurrGoal[adj_fields[i]] << endl;
+			if (min_dist >= distanceArrayToCurrGoal[adj_fields[i]]) {
 				min_dist = distanceArrayToCurrGoal[adj_fields[i]];
 				pos_min_dist = adj_fields[i];
 			}
 		}
+		cout << "found min dist: " << min_dist << endl;
+
 		
 		return pos_min_dist;
 	}
