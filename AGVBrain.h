@@ -51,6 +51,7 @@ public:
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->visited.push_back(false);
 		}
+		
 		cout << endl << "----------- Labyrinth -------------" << endl;
 		print_vec_pos(distanceArrayToCurrGoal);
 		cout << endl;
@@ -67,12 +68,14 @@ public:
 		print_vec(visited);
 		cout << endl;
 		
+
+		
 	}
 
 
 private:
 
-	int cellsinarow = 17; //find correct length
+	int cellsinarow = 17; // add correct lenght
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }
 	int translatePos(int xpos, int ypos) { return (xpos * cellsinarow + ypos); }
@@ -90,6 +93,7 @@ private:
 
 	//track currently visited fields
 	vector<bool> visited;
+
 
 	int goal[2];
 	int subGoal[2];
@@ -295,6 +299,38 @@ private:
 		}
 		
 		return pos_min_dist;
-
 	}
+
+	int difToMove(int difference) {
+		switch (difference) {
+		case 1:
+			return LEFT;
+		case -1:
+			return RIGHT;
+		case 17:
+			return UP;
+		case -17:
+			return DOWN;
+		}
+	}
+
+	//calculates next move from next_pos and accounts global orientation of robot
+	Direction moveToNextPos(int pos, int next_pos, Direction dir)
+	{
+		int move = difToMove(next_pos - pos);
+		switch (dir) {
+		case DOWN:
+			move = move * -1;
+		case RIGHT:
+			if (move % 2 == 0) move = move / -2;
+			else move = move * 2;
+		case LEFT:
+			if (move % 2 == 0) move = move / 2;
+			else move = move * -2;
+		}
+
+		return (Direction)move;
+		
+	}
+
 };
