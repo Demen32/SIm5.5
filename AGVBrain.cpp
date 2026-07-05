@@ -8,12 +8,14 @@ Direction AGVBrain::makeMove()
     Direction move;
     vector<int> wayChoosingOptions;
     int chosenOption;
+    
+    
 
 
     int x = xTranslate(pos), y = yTranslate(pos);
     int wallX = x, wallY = y;
-    cout << "pos = " << pos << endl;
-    cout << "x = " << x << "y = " << y << endl;
+    //cout << "pos = " << pos << endl;
+    //cout << "x = " << x << " y = " << y << endl;
 
     // Front Sensor
 
@@ -53,10 +55,13 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
-            cout << "l wall: " << wallIndex << endl;
+            //cout << "l wall: " << wallIndex << endl;
             wallX = x, wallY = y;
         }
     }
+
+    cout << "pos = " << pos << endl;
+
 
     //this function delivers the next pos to move to
     int next_pos = find_shortest_path(pos);
@@ -65,10 +70,13 @@ Direction AGVBrain::makeMove()
     if (next_pos == posSubGoal) foundSubGoal = true;
     //condition to terminate program
     if (next_pos == posGoal) foundGoal = true;
+
     
-    move = (Direction)UP;
-    orientation = (Direction)UP;
-    /*
+    //cout << "move = " << move << " nextpos = " << next_pos << endl;
+
+    move = LEFT;
+    // left set as default only for testing purpose, we need to change it later
+
     if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
         // two walls detected, next for loop will find free space
         for (int i = 0; i <= 2; i++) {
@@ -82,20 +90,8 @@ Direction AGVBrain::makeMove()
     }
     else {
         if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 1) {
-            // one wall detected, robot will choose one way randomly
-            for (int i = 0; i <= 2; i++) {
-                if (sensorInformation[i] == 0) {
-                    wayChoosingOptions.push_back(i);
-                }
-            }
-            chosenOption = wayChoosingOptions[GetRandomValue(0, 1)];
-            if (chosenOption == 0) move = UP;
-            if (chosenOption == 1) move = RIGHT;
-            if (chosenOption == 2) move = LEFT;
-            wayChoosingOptions.clear();
-
-
-
+            // one wall detected, robot will choose one that is closer to goal
+            move = moveToNextPos(pos, next_pos, dir);
         };
         if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 3) {
             // sensors found a dead end, go back
@@ -103,7 +99,7 @@ Direction AGVBrain::makeMove()
         }
 
     }
-    */
+    
 
 
 
@@ -139,6 +135,7 @@ Direction AGVBrain::makeMove()
         pos = pos + cellsinarow;
         break;
     }
+
 
     return move;
 }
