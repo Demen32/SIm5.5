@@ -338,18 +338,17 @@ private:
 		switch (dir) {
 		case DOWN:
 			move = move * -1;
-			
-			
+			break;
 		case RIGHT:
 			if (move % 2 == 0) move = move / 2;
 			else move = move * -2;
-			
+			break;
 		case LEFT:
 			if (move % 2 == 0) move = move / -2;
 			else move = move * 2;
-			
+			break;
 		}
-
+		cout << "Erfolg! " << move << " " << next_pos << " " << pos << endl;
 		return (Direction)move;
 		
 	}

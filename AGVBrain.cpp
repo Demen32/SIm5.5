@@ -10,7 +10,7 @@ Direction AGVBrain::makeMove()
     int chosenOption;
     
     
-
+    cout << "startpos = " << pos << endl;
 
     int x = xTranslate(pos), y = yTranslate(pos);
     int wallX = x, wallY = y;
@@ -60,25 +60,24 @@ Direction AGVBrain::makeMove()
         }
     }
 
-    cout << "pos = " << pos << endl;
+    
 
 
     //this function delivers the next pos to move to
     int next_pos = find_shortest_path(pos);
 
     //mode switch for targeting next goal
-    if (next_pos == posSubGoal) {
+    if (pos == posSubGoal) {
         cout << "-------------- SUBGOAL FOUND ----------------" << endl;
         foundSubGoal = true;
     }
     //condition to terminate program
-    if (next_pos == posGoal) foundGoal = true;
+    if (pos == posGoal) foundGoal = true;
 
     
     //cout << "move = " << move << " nextpos = " << next_pos << endl;
 
    
-    // left set as default only for testing purpose, we need to change it later
     move = moveToNextPos(pos, next_pos, dir);
     /*
     if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
@@ -140,6 +139,8 @@ Direction AGVBrain::makeMove()
         break;
     }
 
-
+    
+    cout << "nextpos = " << next_pos << " move = " << move << " pos = " << pos << " orientation = " << dir << endl;
+    cout << "*******************" << endl;
     return move;
 }
