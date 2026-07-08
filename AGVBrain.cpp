@@ -5,7 +5,7 @@
 Direction AGVBrain::makeMove()
 {   
     wayValueMatrix = distanceArrayToCurrGoal;
-    cout << cellsinarow << endl;
+    //cout << cellsinarow << endl;
 
     if (pos == 1) { pos = 1; dir = UP; moves = 0; foundSubGoal = false; foundGoal = false; }
     
@@ -27,11 +27,11 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
-            cout << "f wall: " << wallIndex << endl;
+            //cout << "f wall: " << wallIndex << endl;
             wallX = x, wallY = y;
         }
     }
-    cout << "dir = " << dir << endl;
+    //cout << "dir = " << dir << endl;
     // Right Sensor
     if (sensorInformation[1] == true) {
         if (dir == UP) wallY = wallY - 1;
@@ -42,7 +42,7 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
-            cout << "r wall: " << wallIndex << "dir = " << dir << endl;
+            //cout << "r wall: " << wallIndex << "dir = " << dir << endl;
             wallX = x, wallY = y;
         }
     }
@@ -57,7 +57,7 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
-            cout << "l wall: " << wallIndex << endl;
+            //cout << "l wall: " << wallIndex << endl;
             wallX = x, wallY = y;
         }
     }
