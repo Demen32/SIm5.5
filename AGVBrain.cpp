@@ -3,20 +3,19 @@
 
 
 Direction AGVBrain::makeMove()
-{
-    moves++;
-    Direction move;
-    vector<int> wayChoosingOptions;
-    int chosenOption;
-    
-    
-    cout << "startpos = " << pos << endl;
+{   
+    wayValueMatrix = distanceArrayToCurrGoal;
+    cout << cellsinarow << endl;
 
+    if (pos == 1) { pos = 1; dir = UP; moves = 0; foundSubGoal = false; foundGoal = false; }
+    
+    moves++;
+    
+    Direction move;
+    
     int x = xTranslate(pos), y = yTranslate(pos);
     int wallX = x, wallY = y;
-    //cout << "pos = " << pos << endl;
-    //cout << "x = " << x << " y = " << y << endl;
-
+    
     // Front Sensor
 
     if (sensorInformation[0] == true) {
@@ -28,9 +27,11 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
+            cout << "f wall: " << wallIndex << endl;
             wallX = x, wallY = y;
         }
     }
+    cout << "dir = " << dir << endl;
     // Right Sensor
     if (sensorInformation[1] == true) {
         if (dir == UP) wallY = wallY - 1;
@@ -41,6 +42,7 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
+            cout << "r wall: " << wallIndex << "dir = " << dir << endl;
             wallX = x, wallY = y;
         }
     }
@@ -55,57 +57,27 @@ Direction AGVBrain::makeMove()
         int wallIndex = wallY + (wallX * cellsinarow);
         if (wallIndex >= 0 && wallIndex < brainLabyrinth.size()) {
             brainLabyrinth[wallIndex] = BLOCK;
-            //cout << "l wall: " << wallIndex << endl;
+            cout << "l wall: " << wallIndex << endl;
             wallX = x, wallY = y;
         }
     }
-
-    
-
 
     //this function delivers the next pos to move to
     int next_pos = find_shortest_path(pos);
 
     //mode switch for targeting next goal
-    if (pos == posSubGoal) {
+    if (next_pos == posSubGoal) {
         cout << "-------------- SUBGOAL FOUND ----------------" << endl;
         foundSubGoal = true;
     }
     //condition to terminate program
-    if (pos == posGoal) foundGoal = true;
-
-    
-    //cout << "move = " << move << " nextpos = " << next_pos << endl;
-
-   
-    move = moveToNextPos(pos, next_pos, dir);
-    /*
-    if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 2) {
-        // two walls detected, next for loop will find free space
-        for (int i = 0; i <= 2; i++) {
-            if (sensorInformation[i] == 0) {
-                if (i == 0) { move = UP; }
-                if (i == 1) { move = RIGHT; }
-                if (i == 2) { move = LEFT; }
-                break;
-            }
-        }
+    if (next_pos == posGoal) {
+        cout << "-------------- GOAL FOUND ----------------" << endl;
+        foundGoal = true;
     }
-    else {
-        if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 1){
-            // one wall detected, robot will choose one that is closer to goal
-            move = moveToNextPos(pos, next_pos, dir);
-        };
-        if (sensorInformation[0] + sensorInformation[1] + sensorInformation[2] == 3) {
-            // sensors found a dead end, go back
-            move = DOWN;
-        }
-
-    }*/
+      
+    move = moveToNextPos(pos, next_pos, dir);
     
-
-
-
     orientation = move;
 
     //Translation of given orientation in global direction
@@ -138,15 +110,12 @@ Direction AGVBrain::makeMove()
         pos = pos + cellsinarow;
         break;
     }
-
-    
-    cout << "nextpos = " << next_pos << " move = " << move << " pos = " << pos << " orientation = " << dir << endl;
-    cout << "*******************" << endl;
-    
-    if (moves == 72) {
+   
+    if (foundGoal == true){
         moves = 0;
         foundSubGoal = false;
         foundGoal = false;
     }
+    
     return move;
 }

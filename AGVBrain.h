@@ -38,9 +38,11 @@ public:
 				//Just Zeros
 		for (int i = 0; i < this->brainLabyrinth.size(); i++) {
 			this->wayValueMatrix.push_back(0);
+			cellsinarow++;
 		}
+		cellsinarow = (int)sqrt(cellsinarow);
 		//Change to true
-		this->showWayValues = false;
+		this->showWayValues = true;
 		//--------------OPTIONAL CHANGE -----------------//
 
 		find_goals();
@@ -66,16 +68,17 @@ public:
 		print_vec(visited);
 		cout << endl;
 		
-
+		
 		
 	}
 
 
 private:
 
+	
 	int moves = 0;
-
-	int cellsinarow = 17; // add correct lenght
+	
+	int cellsinarow; // add correct lenght
 	int yTranslate(int pos) { return pos % cellsinarow; }
 	int xTranslate(int pos) { return pos / cellsinarow; }
 	int translatePos(int xpos, int ypos) { return (xpos * cellsinarow + ypos); }
@@ -320,17 +323,13 @@ private:
 		return pos_min_dist;
 	}
 
+
+
 	int difToMove(int difference) {
-		switch (difference) {
-		case 1:
-			return LEFT;
-		case -1:
-			return RIGHT;
-		case 17:
-			return UP;
-		case -17:
-			return DOWN;
-		}
+		if (difference == 1) return LEFT;
+		if (difference == -1) return RIGHT;
+		if (difference == cellsinarow) return UP;
+		if (difference == ( - 1 * cellsinarow)) return DOWN;
 	}
 	
 	//calculates next move from next_pos and accounts global orientation of robot
@@ -350,7 +349,7 @@ private:
 			else move = move * 2;
 			break;
 		}
-		cout << "Erfolg! " << move << " " << next_pos << " " << pos << endl;
+		
 		return (Direction)move;
 		
 	}
