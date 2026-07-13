@@ -67,12 +67,12 @@ Direction AGVBrain::makeMove()
 
     //mode switch for targeting next goal
     if (next_pos == posSubGoal) {
-        cout << "-------------- SUBGOAL FOUND ----------------" << endl;
+        //cout << "-------------- SUBGOAL FOUND ----------------" << endl;
         foundSubGoal = true;
     }
     //condition to terminate program
     if (next_pos == posGoal) {
-        cout << "-------------- GOAL FOUND ----------------" << endl;
+        //cout << "-------------- GOAL FOUND ----------------" << endl;
         foundGoal = true;
     }
       

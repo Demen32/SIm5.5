@@ -51,7 +51,7 @@ public:
 			this->distanceArrayToCurrGoal.push_back(0);
 		}
 		redrawVisited();
-		
+		/*
 		cout << endl << "----------- Labyrinth -------------" << endl;
 		print_vec_pos(distanceArrayToCurrGoal);
 		cout << endl;
@@ -67,7 +67,7 @@ public:
 		cout << endl << "----------- Post-Visited Array ---------" << endl;
 		print_vec(visited);
 		cout << endl;
-		
+		*/
 	}
 
 
@@ -168,7 +168,7 @@ private:
 		int i = 0;
 		while (not goalFound || not subGoalFound) {
 			if (i > brainLabyrinth.size()) {
-				cout << "Index out of Bounds: Couldn't find goal or subgoal" << endl;
+				//cout << "Index out of Bounds: Couldn't find goal or subgoal" << endl;
 			}
 			else if (brainLabyrinth[i] == 2) {
 				subGoal[0] = xTranslate(i);
@@ -176,9 +176,9 @@ private:
 				posSubGoal = i;
 				subGoalFound = true;
 				i++;
-				cout << "-----------subgoal found---------------" << endl;
-				cout << "Subgoal Position at (" << subGoal[0] << "|" << subGoal[1] << ")" << endl;
-				cout << "Pos at " << posSubGoal << endl;
+				//cout << "-----------subgoal found---------------" << endl;
+				//cout << "Subgoal Position at (" << subGoal[0] << "|" << subGoal[1] << ")" << endl;
+				//cout << "Pos at " << posSubGoal << endl;
 			}
 			else if (brainLabyrinth[i] == 3) {
 				goal[0] = xTranslate(i);
@@ -186,9 +186,9 @@ private:
 				posGoal = i;
 				goalFound = true;
 				i++;
-				cout << "-----------goal found---------------" << endl;
-				cout << "Goal Position at (" << goal[0] << "|" << goal[1] << ")" << endl;
-				cout << "Pos at " << posGoal << endl;
+				//cout << "-----------goal found---------------" << endl;
+				//cout << "Goal Position at (" << goal[0] << "|" << goal[1] << ")" << endl;
+				//cout << "Pos at " << posGoal << endl;
 
 			}
 			else {
@@ -299,9 +299,9 @@ private:
 	int find_shortest_path(int currPos) {
 		if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
 		else calculateDistanceArray(posGoal); 
-		cout << endl;
-		print_vec(distanceArrayToCurrGoal);
-		cout << endl;
+		//cout << endl;
+		//print_vec(distanceArrayToCurrGoal);
+		//cout << endl;
 
 		vector<int> adj_fields = find_adj_pos(currPos);
 		int min_dist = distanceArrayToCurrGoal[adj_fields[0]];
@@ -309,7 +309,7 @@ private:
 		//cout << "first min dist: " << min_dist << endl;
 		//find min from distances in adj_fields
 		for (int i = 0; i < adj_fields.size(); i++) {
-			cout << "distance " << i << ": " << distanceArrayToCurrGoal[adj_fields[i]] << endl;
+			//cout << "distance " << i << ": " << distanceArrayToCurrGoal[adj_fields[i]] << endl;
 			if (min_dist >= distanceArrayToCurrGoal[adj_fields[i]]) {
 				min_dist = distanceArrayToCurrGoal[adj_fields[i]];
 				pos_min_dist = adj_fields[i];
