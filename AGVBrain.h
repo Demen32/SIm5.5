@@ -75,6 +75,7 @@ private:
 
 	
 	int moves = 0;
+	int versuch = 0;
 	
 	int cellsinarow; // add correct lenght
 	int yTranslate(int pos) { return pos % cellsinarow; }
@@ -220,7 +221,7 @@ private:
 			}
 
 			else if (brainLabyrinth[translatePos(x, y)] == BLOCK) {
-				distanceArrayToCurrGoal[translatePos(x, y)] = 99;
+				distanceArrayToCurrGoal[translatePos(x, y)] = 999;
 				visited[translatePos(x, y)] = true;
 				return false;
 			}
@@ -295,10 +296,32 @@ private:
 
 	}
 
+	bool isGoalCloser() {
+		int a = xTranslate(posGoal)*xTranslate(posGoal) + yTranslate(posGoal)* yTranslate(posGoal);
+		int b = xTranslate(posSubGoal) * xTranslate(posSubGoal) + yTranslate(posSubGoal) * yTranslate(posSubGoal);
+		return (a <= b);
+	}
+
 	//this function delivers the next pos to move to
 	int find_shortest_path(int currPos) {
-		if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
-		else calculateDistanceArray(posGoal); 
+		if (versuch == 1) {
+			if (isGoalCloser()) {
+				if (foundGoal == false) calculateDistanceArray(posGoal);
+				else {
+					if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
+					else calculateDistanceArray(posGoal);
+				}
+			}
+			else {
+				if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
+				else calculateDistanceArray(posGoal);
+			}
+			
+		}
+		else {
+			if (foundSubGoal == false) calculateDistanceArray(posSubGoal);
+			else calculateDistanceArray(posGoal);
+		}
 		//cout << endl;
 		//print_vec(distanceArrayToCurrGoal);
 		//cout << endl;

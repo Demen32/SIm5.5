@@ -7,8 +7,11 @@ Direction AGVBrain::makeMove()
     wayValueMatrix = distanceArrayToCurrGoal;
     //cout << cellsinarow << endl;
 
-    if (pos == 1) { pos = 1; dir = UP; moves = 0; foundSubGoal = false; foundGoal = false; }
+    if (pos == 1) { pos = 1; dir = UP; moves = 0; foundSubGoal = false; foundGoal = false; versuch++; }
     
+    if (versuch == 1)
+
+
     moves++;
     
     Direction move;
@@ -72,7 +75,7 @@ Direction AGVBrain::makeMove()
     }
     //condition to terminate program
     if (next_pos == posGoal) {
-        //cout << "-------------- GOAL FOUND ----------------" << endl;
+        cout << "-------------- GOAL FOUND ----------------" << endl;
         foundGoal = true;
     }
       
@@ -111,11 +114,7 @@ Direction AGVBrain::makeMove()
         break;
     }
    
-    if (foundGoal == true){
-        moves = 0;
-        foundSubGoal = false;
-        foundGoal = false;
-    }
+    
     
     return move;
 }
