@@ -8,7 +8,7 @@ Direction AGVBrain::makeMove()
     //cout << cellsinarow << endl;
 
     if (pos == 1) { pos = 1; dir = UP; moves = 0; foundSubGoal = false; foundGoal = false; versuch++; }
-    
+    if (versuch == 4) versuch = 1;
     if (versuch == 1)
 
 
